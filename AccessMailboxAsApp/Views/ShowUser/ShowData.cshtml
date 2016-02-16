@@ -1,0 +1,218 @@
+﻿@model AccessMailboxAsApp.Models.showData
+
+@{
+    ViewBag.Title = ViewData["PersonName"];
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/keen-dashboards.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        var years = [@Model.ProductData.ReceivedCount];
+        var sales = [@Model.ProductData.SendCount];
+        var cars = ["12-Oct", "5-Oct to 11-Oct", "28-oct to 4-Oct"];
+        data.addColumn('string', 'Date');
+        data.addColumn('number',  'Received Mail');
+        data.addColumn('number', 'Send Mail');
+        data.addColumn('number', 'Un ActionMail');
+        for (i = 0; i < years.length; i++) {
+            data.addRow([cars[i],years[i], sales[i],years[i]-sales[i]]);
+
+        }
+        var options = {
+
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, options);
+    } google.load("visualization", "1.1", { packages: ["bar"] });
+
+    //GRAPH 2
+    google.load("visualization", "1", { packages: ["corechart"] });
+    google.setOnLoadCallback(drawChart1);
+    function drawChart1() {
+
+        var data = google.visualization.arrayToDataTable([]);
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'Mail Type');
+
+        data.addRow(['Received Mail',@Model.ProductData.TotalReceive ]);
+        data.addRow(['Send Mail', @Model.ProductData.TotalSend]);
+        data.addRow(['UnAction Mail', @Model.ProductData.TotalReceive-@Model.ProductData.TotalSend]);
+        var options = {
+           
+           
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+
+    //GRAPH 3
+    google.load("visualization", "1", { packages: ["corechart"] });
+    google.setOnLoadCallback(drawChart7);
+    function drawChart7() {
+
+        var data = google.visualization.arrayToDataTable([]);
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'Mail Type');
+
+        data.addRow(['Received Mail',@Model.ProductData.TotalReceiveComWhole ]);
+        data.addRow(['Send Mail', @Model.ProductData.TotalSendComWhole]);
+        data.addRow(['UnAction Mail', @Model.ProductData.TotalReceiveComWhole-@Model.ProductData.TotalSendComWhole]);
+        var options = {
+           
+           
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+        chart.draw(data, options);
+    }
+
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart2);
+    function drawChart2() {
+        var data = new google.visualization.DataTable();
+        var years = [@Model.ProductData.TotalReceiveCom];
+        var sales = [@Model.ProductData.TotalSendCom];
+        var cars = ["12-Oct", "5-Oct to 11-Oct", "28-oct to 4-Oct"];
+        data.addColumn('string', 'Date');
+        data.addColumn('number',  'Received Mail');
+        data.addColumn('number', 'Send Mail');
+        data.addColumn('number', 'Un ActionMail');
+        for (i = 0; i < years.length; i++) {
+            data.addRow([cars[i],years[i], sales[i],years[i]-sales[i]]);
+
+        }
+        var options = {
+
+            hAxis: {title: 'Time Frame',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('linechart_material'));
+        chart.draw(data, options);
+    }
+
+
+//User Response Time
+    google.load("visualization", "1", { packages: ["corechart"] });
+    google.setOnLoadCallback(drawChart3);
+    function drawChart3() {
+
+        var data = google.visualization.arrayToDataTable([]);
+        var years = [@Model.ProductData.userResponse];
+
+        var cars = ["0 to 2 Hours", "2 to 4 Hours", "4 to 8 Hours","Next Day","24 Hours and over"];
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'Mail Type');
+
+        for (i = 0; i < cars.length; i++) {
+            data.addRow([cars[i],years[i]]);
+
+        }
+        var options = {
+
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('userResponseGraph'));
+
+        chart.draw(data, options);
+    }
+
+
+    //Company Performance
+
+</script>
+
+
+    <h2>@ViewData["PersonName"]</h2>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-6">
+            <div class="chart-wrapper">
+                <div class="chart-title">
+                    User Performance (past 14 Days)
+                </div>
+                <div class="chart-stage">
+                    <div id="columnchart_material"></div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+            <div class="chart-wrapper">
+                <div class="chart-title">
+                   Overall Performance
+                </div>
+                <div class="chart-stage">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="tabbable tabs-left">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#piechart" data-toggle="tab">User</a></li>
+                                    <li><a href="#piechart2" data-toggle="tab">Whole Company</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="piechart">
+
+                                </div>
+                                <div class="tab-pane" id="piechart2"></div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Overall Company Performance (past 14 Days)
+                    </div>
+                    <div class="chart-stage">
+                        <div id="linechart_material"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Response Time
+                    </div>
+                    <div class="chart-stage">
+                        <div id="userResponseGraph"></div>
+                        <div class="chart-notes">
+                            Current User Average response time is:@ViewData["UserResponse"]
+                        </div>
+                    </div>
+
+                </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
