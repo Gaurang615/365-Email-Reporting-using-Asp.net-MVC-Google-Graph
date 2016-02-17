@@ -28,7 +28,7 @@ using System.Configuration;
 
 namespace AccessMailboxAsApp.Controllers
 {
-    // From: Jason Johnston@https://github.com/jasonjoh/office365-azure-guides/blob/master/code/parse-token.cs
+    
     static class Base64UrlEncoder
     {
         //Encode 
